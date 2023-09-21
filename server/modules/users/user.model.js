@@ -12,11 +12,18 @@ const userSchema = new Schema({
     required: "Email address is required",
     validate: [validateEmail, "Please fill a valid email address"],
   },
+  isEmailVerified: {type: Boolean, default: false},
   password: {
     type: String,
     required: true,
   },
+
+  isActive: {type: Boolean, default: true},
   ...commonSchema,
 });
+
+
+
+
 
 module.exports = model("User", userSchema);
