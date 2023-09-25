@@ -25,7 +25,7 @@ router.get("/verify", async (req, res, next) => {
     try {
       const {email, token } = req.body;
       if (!email || !token) throw new Error("Email or token is missing");
-      const result = await Controller.VerifyEmail(email, token);
+      const result = await Controller.verifyEmail(email, token);
       res.json({ data: result, msg: "success" });
     } catch (e) {
       next(e);
@@ -37,6 +37,17 @@ router.get("/verify", async (req, res, next) => {
       const {email} = req.body;
       if (!email) throw new Error("Email is missing");
       const result = await Controller.regenerate(email);
+      res.json({ data: result, msg: "success" });
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  router.put("/forget-password", async (req, res, next) => {
+    try {
+      const {email, token, password} = req.body;
+      if (!email || !token || !password) throw new Error("Emailor token or password is missing");
+      const result = await Controller.forgetPassword(email, token, password);
       res.json({ data: result, msg: "success" });
     } catch (e) {
       next(e);
