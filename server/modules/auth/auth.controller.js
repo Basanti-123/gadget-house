@@ -64,6 +64,23 @@ const regenerate = async (email) => {
   await mailer(email, token);
   return true;
 };
+
+// forget Password
+
+const generateFPToken = async (email) => {
+  const user = await userModel.findOne({
+    email,
+    isActive: true,
+    isArchived: false,
+  });
+  if (!user) throw new Error("User not found");
+  const token = generateOTP();
+  await authModel.create({ email, token });
+  // send token to email
+  mailer(email, token);
+  return true;
+};
+
 const forgetPassword = async (email, token, password) => {
   const user = await userModel.findOne({ email, isArchived: false });
   if (!user) throw new Error("User not found");
@@ -81,4 +98,11 @@ const forgetPassword = async (email, token, password) => {
   return true;
 };
 
-module.exports = { create, forgetPassword, login, verifyEmail, regenerate };
+module.exports = {
+  create,
+  forgetPassword,
+  generateFPToken,
+  login,
+  regenerate,
+  verifyEmail,
+};

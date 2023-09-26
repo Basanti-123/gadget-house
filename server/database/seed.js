@@ -10,11 +10,12 @@ var setup = {
     console.log("DB reset");
     console.log("Creating Admin Account");
     const payload = {
-      name: "Raktim Admin",
-      email: "rakimsth@gmail.com",
+      name: "Basanti User",
+      email: "bnagari154@gmail.com",
       password: await bcrypt.hash("password", +process.env.SALT_ROUNDS),
       roles: ["admin"],
       isActive: true,
+      isArchived: false,
       isEmailVerified: true,
     };
     await userController.create(payload);
@@ -22,10 +23,11 @@ var setup = {
 
     console.log("Creating User Account");
     const userPayload = {
-      name: "Raktim User",
-      email: "raktim@rumsan.com",
+      name: "Basanti User",
+      email: "basantinagari23@gmail.com",
       password: await bcrypt.hash("password", +process.env.SALT_ROUNDS),
       isActive: true,
+      isArchived: false,
       isEmailVerified: true,
     };
     await userController.create(userPayload);

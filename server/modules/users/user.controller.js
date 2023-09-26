@@ -18,9 +18,9 @@ const updatedProfile = (id, payload) => {
 
 const changePassword = async (id, payload) => {
   const { oldPassword, newPassword } = payload;
-  const user = await Model.findOne({ _id: id });
+  const user = await Model.findOne({ _id: id }).select("+password");
   if (!user) throw new Error("User not  found");
-  const isValid = await bcrypt.compare(password, user.password);
+  const isValid = await bcrypt.compare(oldPassword, user.password);
   if (!isValid) throw new Error(" Password is invalid");
   const password = await bcrypt.hash(newPassword, +process.env.SALT_ROUNDS);
  await Model.findOneAndUpdate(
@@ -38,7 +38,7 @@ const resetPassword = async (email, payload) => {
   const resetPassword = await bcrypt.hash(password, +process.env.SALT_ROUNDS);
   rest.password = resetPassword 
   await Model.findOneAndUpdate(
-    { _id: user_id },
+    { _id: user._id },
     { ...rest },
     { new: true }
   );
