@@ -4,7 +4,10 @@ const Controller = require("./user.controller");
 
 router.get("/", secureAPI(["admin"]), async (req, res, next) => {
   try {
-    const result = await Controller.list();
+    const { page, limit, name, role } = req.query;
+    const search = { name, role };
+    const result = await Controller.list(page, limit, search);
+
     res.json({ data: result, msg: "success" });
   } catch (e) {
     next(e);
@@ -35,7 +38,7 @@ router.put("/profile", secureAPI(["user", "admin"]), async (req, res, next) => {
 
 router.put("/change-password", secureAPI(["user"]), async (req, res, next) => {
   try {
-    const { oldPassword, newPassword } = req.body
+    const { oldPassword, newPassword } = req.body;
     if (!oldPassword || !newPassword) throw new Error("Password are missing");
     req.created_by = req.currentUser;
     req.updated_by = req.currentUser;
