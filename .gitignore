@@ -131,5 +131,11 @@ dist
 
 #My Testing 
 playground
+/server/public/products/*.
+/server/public/users/*
+
+#exception to the rule
+!/server/public/products/.gitkeep
+!/server/public/users/.gitkeep
 
 
